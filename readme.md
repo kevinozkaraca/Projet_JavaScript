@@ -2,7 +2,7 @@
 
 <br/>
 <p align="center">
-  <img align="center" width="80%" alt="Base du projet Django - BootStrap 5" src="imagesReadme/projet01.gif"/>
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet01.png"/>
 </p>
 <br/>
 
