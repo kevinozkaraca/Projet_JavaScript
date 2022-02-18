@@ -27,7 +27,7 @@ Git (un programme de suivi de version) me permet de savoir quel fichier est nouv
 
 <br/>
 <p align="center">
-  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet04.png"/>
+  <img align="center" width="60%" alt="Base du projet de formation" src="imagesReadme/projet04.png"/>
 </p>
 <br/>
 
@@ -36,6 +36,14 @@ Je test les fonctionnalités en affichant des messages en console, il existe un 
 <br/>
 <p align="center">
   <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet05.gif"/>
+</p>
+<br/>
+
+J'ai mis en place des "Regex" une sorte de barrière à formulaire, qui empèche les formulaires mal remplis d'etre validés. Pour l'instant du texte informe de la validité ou pas des entrés, ensuite je devrais mettre en place une action lié au panier client et la validation de la commande. On peut voir ici que l'adresse mail n'est pas conforme :
+
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet06.gif"/>
 </p>
 <br/>
 
