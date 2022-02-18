@@ -8,11 +8,34 @@
 
 ### Quel est le but de ce projet ?
 
-Le but de ce projet est de nous faire travailler sur le JavaScript et de lier le front (affichage client) au back (l'arrière plan du site). Puisque le sujet est un exercice de formation je ne pourrais pa vraiment détailler les étapes de mon travail mais je vais tout de meme présenter celui-ci de la meilleure manière possible.
+Le but de ce projet est de nous faire travailler sur le JavaScript et de lier le front (affichage client) au back (l'arrière plan du site). Puisque le sujet est un exercice de formation je ne pourrais pas vraiment détailler les étapes de mon travail mais je vais tout de meme présenter celui-ci de la meilleure manière possible.
 
 ### La mise en place :
 
-Avant de continuer à structurer le projet, j'ai mis en place les fichiers et lu l'ensemble des documents donnés par le centre de formation.
+Avant de continuer à structurer le projet, j'ai mis en place les fichiers et lu l'ensemble des documents donnés par le centre de formation. Des messages doivent etre affichés en cas d'erreur, des produits doivent apparaitre de manière dynamique (un code doit aller chercher les informations et les afficher en fonction de la réponse). Voici un exemple :
+
+<br/>
+<p align="center">
+  <img align="center" width="45%" alt="Base du projet de formation" src="imagesReadme/projet02.png"/>
+  <img align="center" width="45%" alt="Base du projet de formation" src="imagesReadme/projet03.png"/>
+</p>
+<br/>
+
+### Mise en place des fichiers JavasCript :
+
+Git (un programme de suivi de version) me permet de savoir quel fichier est nouveau, modifié ou supprimé dans mon projet. J'ai mis en place les fichiers JavaScript dans un dossier avec les noms donnés dans les codes de chaques pages. Une partie va servir à l'affichage client et une autre va servir à l'affichage de test en console.
+
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet04.png"/>
+</p>
+<br/>
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet05.gif"/>
+</p>
+<br/>
+
 
 
 ### Mes reseaux sociaux : 
