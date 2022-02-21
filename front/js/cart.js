@@ -4,7 +4,7 @@ let order = document.getElementById('order');
 
 let firstName = document.getElementById('firstName');
 let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-let regexFirstName = /[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]/;
+let regexFirstName = /[a-zA-Z]/;
 
 let lastName = document.getElementById('lastName');
 let lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -22,7 +22,7 @@ let email = document.getElementById('email');
 let emailErrorMsg = document.getElementById('emailErrorMsg');
 let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-// Gestion des erreurs pour le formulaire lors de la validation
+// Gestion des erreurs pour le formulaire et tests lors de la validation
 
 order.addEventListener('click', function(){
     console.log('Bouton "Commander !" cliqué');
@@ -35,6 +35,8 @@ order.addEventListener('click', function(){
 
 // Gestion des messages à afficher en cas d'erreur
 
+// Le code du mail est bon, vérifier le reste avec les regex à modifier
+
 function validationFirstName(){
     
     if (regexFirstName.test(firstName.value)){ 
@@ -43,50 +45,55 @@ function validationFirstName(){
   }
     else {
         console.log("Le regex du prénom n'est pas passé")
+        firstNameErrorMsg.textContent("Veuillez saisir un prénom correct")
         return (false)
   }
 }
 function validationLastName(){
     
     if (regexLastName.test(lastName.value)){ 
-        console.log("Le regex du nom est passé")
+        console.log("Le regex du nom est passé");
         return (true)
   }
     else {
-        console.log("Le regex du nom n'est pas passé")
+        console.log("Le regex du nom n'est pas passé");
+        emailErrorMsg.textContent = "Veuillez saisir un nom correct";;
         return (false)
   }
 }
 function validationAddress(){
     
     if (regexAddress.test(address.value)){ 
-        console.log("Le regex de l'adresse est passé")
+        console.log("Le regex de l'adresse est passé");
         return (true)
   }
     else {
-        console.log("Le regex de l'adresse n'est pas passé")
+        console.log("Le regex de l'adresse n'est pas passé");
+        addressErrorMsg.textContent = "Veuillez saisir une adresse correcte";;
         return (false)
   }
 }
 function validationCity(){
     
     if (regexCity.test(city.value)){ 
-        console.log("Le regex de la ville est passé")
+        console.log("Le regex de la ville est passé");
         return (true)
   }
     else {
-        console.log("Le regex de la ville n'est pas passé")
+        console.log("Le regex de la ville n'est pas passé");
+        cityErrorMsg.textContent = "Veuillez saisir un ville correcte";
         return (false)
   }
 }
 function validationEmail(){
     
     if (regexEmail.test(email.value)){ 
-        console.log("Le regex du mail est passé")
+        console.log("Le regex du mail est passé");
         return (true)
   }
     else {
-        console.log("Le regex du mail n'est pas passé")
+        console.log("Le regex du mail n'est pas passé");
+        emailErrorMsg.textContent = "Veuillez saisir un mail correct";
         return (false)
   }
 }
