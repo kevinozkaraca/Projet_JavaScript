@@ -49,11 +49,19 @@ J'ai mis en place des "Regex" une sorte de barrière à formulaire, qui empèche
 
 ### Mise en place des elements de l'API :
 
-Je commence a afficher en console les elements présents sur le serveur (fictif). Pour l'instant ça ne ressemble pas à grand chose mais ceux sont les éléments que je devrai afficher sur le site par la suite. J'essaie de les cibler et de les afficher dans un tableau dans un premier temps. A suivre...
+Je commence a afficher en console les elements présents sur le serveur (fictif). Pour l'instant ça ne ressemble pas à grand chose mais ceux sont les éléments que je devrai afficher sur le site par la suite. J'essaie de les cibler et de les afficher dans un tableau dans un premier temps.
 
 <br/>
 <p align="center">
   <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet07.png"/>
+</p>
+<br/>
+
+j'y ai passé la journée mais j'ai réussi à afficher les articles sur le site. Le rendu est fictif, donc les phrases incompréhensibles ne sont pas des erreurs de ma part.
+
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet08.png"/>
 </p>
 <br/>
 
