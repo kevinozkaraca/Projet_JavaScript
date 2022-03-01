@@ -29,8 +29,8 @@ order.addEventListener('click', function(){
     validationFirstName();
     validationLastName();
     validationAddress();
-    validationCity()
-    validationEmail()
+    validationCity();
+    validationEmail();
 });
 
 // Gestion des messages à afficher en cas d'erreur
@@ -53,47 +53,47 @@ function validationLastName(){
     
     if (regexLastName.test(lastName.value)){ 
         console.log("Le regex du nom est passé");
-        return (true)
+        return (true);
   }
     else {
         console.log("Le regex du nom n'est pas passé");
         emailErrorMsg.textContent = "Veuillez saisir un nom correct";;
-        return (false)
+        return (false);
   }
 }
 function validationAddress(){
     
     if (regexAddress.test(address.value)){ 
         console.log("Le regex de l'adresse est passé");
-        return (true)
+        return (true);
   }
     else {
         console.log("Le regex de l'adresse n'est pas passé");
         addressErrorMsg.textContent = "Veuillez saisir une adresse correcte";;
-        return (false)
+        return (false);
   }
 }
 function validationCity(){
     
     if (regexCity.test(city.value)){ 
         console.log("Le regex de la ville est passé");
-        return (true)
+        return (true);
   }
     else {
         console.log("Le regex de la ville n'est pas passé");
         cityErrorMsg.textContent = "Veuillez saisir un ville correcte";
-        return (false)
+        return (false);
   }
 }
 function validationEmail(){
     
     if (regexEmail.test(email.value)){ 
         console.log("Le regex du mail est passé");
-        return (true)
+        return (true);
   }
     else {
         console.log("Le regex du mail n'est pas passé");
         emailErrorMsg.textContent = "Veuillez saisir un mail correct";
-        return (false)
+        return (false);
   }
 }

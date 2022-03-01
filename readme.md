@@ -27,7 +27,7 @@ Git (un programme de suivi de version) me permet de savoir quel fichier est nouv
 
 <br/>
 <p align="center">
-  <img align="center" width="60%" alt="Base du projet de formation" src="imagesReadme/projet04.png"/>
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet04.png"/>
 </p>
 <br/>
 
