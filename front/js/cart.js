@@ -76,7 +76,7 @@ function validationCity() {
     return true;
   } else {
     console.log("Le regex de la ville n'est pas passé");
-    cityErrorMsg.textContent = "Veuillez saisir un ville correcte";
+    cityErrorMsg.textContent = "Veuillez saisir une ville correcte";
     return false;
   }
 }
