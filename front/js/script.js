@@ -1,4 +1,3 @@
-"use strict";
 // ----- API et Affichage sur le site ------
 // Lancement de l'API dans le dossier back> npm install
 //                                    back> node server

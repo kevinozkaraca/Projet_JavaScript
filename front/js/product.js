@@ -1,6 +1,15 @@
 "use strict";
 
+// Eléments du DOM
 const httpAPI = "http://localhost:3000/api/products/";
+const IMGproduit = document.getElementsByClassName("item__img");
+const nomProduit = document.getElementById("title");
+const prixProduit = document.getElementById("price");
+const descriptionProduit = document.getElementById("description");
+const couleurProduit = document.getElementById("colors");
+
+// Eléments à ajouter au DOM
+//const IMGajout = document.createElement();
 
 // Recuperation des informations du lien
 function recuperationURL() {
@@ -16,6 +25,23 @@ let voirURL = recuperationURL();
 console.log("Affichage  d'ID du produit --->");
 console.log(voirURL);
 
-// If l'URL === Actions diferrentes
-
-//if blble.lenght i++
+// Récupération des produits
+if (voirURL == "http://localhost:3000/api/products/null") {
+  console.log("Aucun article à afficher");
+} else {
+  async function recuperationArticles() {
+    return await fetch(httpAPI)
+      .then(function (reponse) {
+        console.log("l'API a bien repondu");
+        return reponse.json();
+      })
+      .then(function (value) {
+        return value;
+      })
+      .catch(function (err) {
+        console.log("Erreur dans le fetch");
+        console.log(err);
+      });
+  }
+  recuperationArticles();
+}
