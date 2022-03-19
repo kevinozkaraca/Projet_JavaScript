@@ -9,7 +9,7 @@ const descriptionProduit = document.getElementById("description");
 const couleurProduit = document.getElementById("colors");
 
 // Eléments à ajouter au DOM
-//const IMGajout = document.createElement();
+let IMGajout = document.createElement("img");
 
 // Recuperation des informations du lien
 function recuperationURL() {
