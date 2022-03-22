@@ -18,7 +18,7 @@ function recuperationURL() {
   return URLfinal;
 }
 
-// Affichage de l'URL en console
+// Affichage de l'URL final (URL +ID)
 let voirURL = recuperationURL();
 console.log("Affichage  d'ID du produit --->");
 console.log(voirURL);
@@ -31,7 +31,8 @@ if (voirURL == "http://localhost:3000/api/products/null") {
   quantiteProduit.setAttribute("max", 0);
 } else {
   async function recuperationArticles() {
-    return await fetch(httpAPI)
+    recuperationURL();
+    return await fetch(voirURL)
       .then(function (reponse) {
         console.log("l'API a bien repondu");
         return reponse.json();
@@ -39,9 +40,19 @@ if (voirURL == "http://localhost:3000/api/products/null") {
       .then(function (value) {
         return value;
       })
-      .catch(function (err) {
-        console.log("Erreur dans le fetch");
-        console.log(err);
+      // Affichage des elements en fonction des produits
+      .then(function (getProduct) {
+        console.log("Ajout des produits au DOM");
+        const product = getProduct;
+        nomProduit.textContent = `${product.name}`;
+        let IMGcreation = document.createElement("img");
+        IMGcreation.setAttribute("src", `${product.imageUrl}`);
+        IMGcreation.setAttribute("alt", `${product.altTxt}`);
+        document.querySelector(".item__img").appendChild(IMGcreation);
+        nomProduit.textContent = `${product.name}`;
+        prixProduit.textContent = `${product.price}`;
+        descriptionProduit.textContent = `${product.description}`;
+        return getProduct;
       });
   }
   recuperationArticles();
