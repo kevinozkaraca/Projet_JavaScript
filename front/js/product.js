@@ -7,9 +7,7 @@ const nomProduit = document.getElementById("title");
 const prixProduit = document.getElementById("price");
 const descriptionProduit = document.getElementById("description");
 const couleurProduit = document.getElementById("colors");
-
-// Eléments à ajouter au DOM
-let IMGajout = document.createElement("img");
+const quantiteProduit = document.getElementById("quantity");
 
 // Recuperation des informations du lien
 function recuperationURL() {
@@ -25,9 +23,12 @@ let voirURL = recuperationURL();
 console.log("Affichage  d'ID du produit --->");
 console.log(voirURL);
 
-// Récupération des produits
+// Récupération des produits / Affichage sans produit
 if (voirURL == "http://localhost:3000/api/products/null") {
   console.log("Aucun article à afficher");
+  descriptionProduit.innerText = "Aucun produit à Afficher";
+  quantiteProduit.setAttribute("min", 0);
+  quantiteProduit.setAttribute("max", 0);
 } else {
   async function recuperationArticles() {
     return await fetch(httpAPI)
