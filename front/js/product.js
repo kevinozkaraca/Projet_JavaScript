@@ -19,12 +19,12 @@ function recuperationURL() {
 }
 
 // Affichage de l'URL final (URL +ID)
-let voirURL = recuperationURL();
+let afficheURL = recuperationURL();
 console.log("Affichage  d'ID du produit --->");
-console.log(voirURL);
+console.log(afficheURL);
 
 // Récupération des produits / Affichage sans produit
-if (voirURL == "http://localhost:3000/api/products/null") {
+if (afficheURL == "http://localhost:3000/api/products/null") {
   console.log("Aucun article à afficher");
   descriptionProduit.innerText = "Aucun produit à Afficher";
   quantiteProduit.setAttribute("min", 0);
@@ -32,7 +32,7 @@ if (voirURL == "http://localhost:3000/api/products/null") {
 } else {
   async function recuperationArticles() {
     recuperationURL();
-    return await fetch(voirURL)
+    return await fetch(afficheURL)
       .then(function (reponse) {
         console.log("l'API a bien repondu");
         return reponse.json();
@@ -44,14 +44,24 @@ if (voirURL == "http://localhost:3000/api/products/null") {
       .then(function (getProduct) {
         console.log("Ajout des produits au DOM");
         const product = getProduct;
-        nomProduit.textContent = `${product.name}`;
+        // Image
         let IMGcreation = document.createElement("img");
         IMGcreation.setAttribute("src", `${product.imageUrl}`);
         IMGcreation.setAttribute("alt", `${product.altTxt}`);
         document.querySelector(".item__img").appendChild(IMGcreation);
+        // Nom
         nomProduit.textContent = `${product.name}`;
+        // Prix
         prixProduit.textContent = `${product.price}`;
+        // Description
         descriptionProduit.textContent = `${product.description}`;
+        // Couleur
+        couleurProduit.insertAdjacentHTML(
+          "beforeend",
+          product.colors
+            .map((color) => `<option value="${color}">${color}</option>`)
+            .join()
+        );
         return getProduct;
       });
   }
