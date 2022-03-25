@@ -30,6 +30,8 @@ if (afficheURL == "http://localhost:3000/api/products/null") {
   descriptionProduit.innerText = "Aucun produit à Afficher";
   quantiteProduit.setAttribute("min", 0);
   quantiteProduit.setAttribute("max", 0);
+  boutonPanier.disabled = true;
+  alert("Aucun produit selectionne");
 } else {
   async function recuperationArticles() {
     recuperationURL();
@@ -71,17 +73,21 @@ if (afficheURL == "http://localhost:3000/api/products/null") {
 }
 
 // Fonction du  bouton 'Ajouter au panier'
-boutonPanier.addEventListener("click", function (e) {
+boutonPanier.addEventListener("click", function () {
   let couleurChoisi = document.getElementById("colors").value;
   let quantiteSelectionnee = parseInt(
     document.getElementById("quantity").value
   );
+  // Conditions de fonctionnalite du bouton
   if (couleurChoisi == "") {
     console.log("pas de couleur selectionnee");
+    alert("Vous n'avez pas selectionnez de couleur");
   } else if (quantiteSelectionnee == 0) {
     console.log("0 en quantite");
+    alert("Vous n'avez pas selectionnez de quantite");
   } else if (quantiteSelectionnee > 100) {
     console.log("Au dessus de la quantite possible");
+    alert("La quantite est superieur a 100");
   } else if (descriptionProduit.innerText == "Aucun produit à Afficher") {
     console.log("Aucun article affiche");
   } else {
@@ -93,6 +99,7 @@ boutonPanier.addEventListener("click", function (e) {
       color: couleurChoisi,
       quantity: quantiteSelectionnee,
     };
+    // LocalStorage
     console.log("pret a recevoir le panier");
     console.log(Produitselectionne);
     localStorage.setItem("id", Produitselectionne.id);
