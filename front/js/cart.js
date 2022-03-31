@@ -1,5 +1,12 @@
 "use strict";
 
+// code a modifier :
+
+/*
+create element .... foreach
+*/
+
+// Regex a reviser
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 
 let order = document.getElementById("order");

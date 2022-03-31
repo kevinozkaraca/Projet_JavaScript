@@ -31,7 +31,7 @@ if (afficheURL == "http://localhost:3000/api/products/null") {
   quantiteProduit.setAttribute("min", 0);
   quantiteProduit.setAttribute("max", 0);
   boutonPanier.disabled = true;
-  alert("Aucun produit selectionne");
+  //alert("Aucun produit selectionne");
 } else {
   async function recuperationArticles() {
     recuperationURL();
@@ -52,6 +52,8 @@ if (afficheURL == "http://localhost:3000/api/products/null") {
         IMGcreation.setAttribute("src", `${product.imageUrl}`);
         IMGcreation.setAttribute("alt", `${product.altTxt}`);
         document.querySelector(".item__img").appendChild(IMGcreation);
+        // iod
+        boutonPanier.setAttribute("data-id", `${product._id}`);
         // Nom
         nomProduit.textContent = `${product.name}`;
         // Prix
@@ -91,19 +93,34 @@ boutonPanier.addEventListener("click", function () {
   } else if (descriptionProduit.innerText == "Aucun produit à Afficher") {
     console.log("Aucun article affiche");
   } else {
-    const lienDeLaFenetre = window.location;
-    const recupURL = new URL(lienDeLaFenetre);
-    let productId = recupURL.searchParams.get("id");
-    const Produitselectionne = {
-      id: productId,
+    let produitSelectionne = {
+      id: boutonPanier.getAttribute("data-id"),
       color: couleurChoisi,
       quantity: quantiteSelectionnee,
     };
-    // LocalStorage
-    console.log("pret a recevoir le panier");
-    console.log(Produitselectionne);
-    localStorage.setItem("id", Produitselectionne.id);
-    localStorage.setItem("color", Produitselectionne.color);
-    localStorage.setItem("quantity", Produitselectionne.quantity);
+    ajoutAuPanier(produitSelectionne);
   }
 });
+
+function ajoutAuPanier(produitSelectionne) {
+  let panierLocal = [];
+  let cart = JSON.parse(localStorage.getItem("panier"));
+  // De base le localStorage.XXX fourni le getItem XXX
+  // let cart = JSON.parse(localStorage.panier);
+  if (cart.length) {
+    console.log("Le panier a recu --->");
+    console.log(produitSelectionne);
+    panierLocal.push(produitSelectionne);
+    localStorage.setItem("panier", JSON.stringify(panierLocal));
+  } else {
+    array.forEach((element) => {
+      console.log("une erreur s'est produite");
+      console.log(element);
+    });
+  }
+  const lienDeLaFenetre = window.location;
+  const recupURL = new URL(lienDeLaFenetre);
+  let productId = recupURL.searchParams.get("id");
+
+  // LocalStorage
+}
