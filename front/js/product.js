@@ -9,8 +9,17 @@ const descriptionProduit = document.getElementById("description");
 const couleurProduit = document.getElementById("colors");
 const quantiteProduit = document.getElementById("quantity");
 let boutonPanier = document.getElementById("addToCart");
-let compteurDesArticles = 0;
+let compteurDesArticles = localStorage.length - 1;
 let panierLocal = new Object();
+
+// Condition pour compter les produits du local storage
+if (localStorage.length == undefined) {
+  localStorage.length = 0;
+  let compteurDesArticles = localStorage.length - 1;
+  console.log(compteurDesArticles);
+  console.log("passage dans le if pour le local");
+}
+
 // Recuperation des informations du lien
 function recuperationURL() {
   const lienDeLaFenetre = window.location;
@@ -103,7 +112,7 @@ boutonPanier.addEventListener("click", function () {
     // LocalStorage
     console.log("pret a recevoir le panier");
     console.log(Produitselectionne);
-    // A stringifier
+    // Produitselectionne dans un tableau different
     panierLocal[compteurDesArticles] = {
       id: Produitselectionne.id,
       couleur: Produitselectionne.color,
