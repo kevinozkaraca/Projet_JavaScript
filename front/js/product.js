@@ -12,14 +12,6 @@ let boutonPanier = document.getElementById("addToCart");
 let compteurDesArticles = localStorage.length - 1;
 let panierLocal = new Object();
 
-// Condition pour compter les produits du local storage
-if (localStorage.length == undefined) {
-  localStorage.length = 0;
-  let compteurDesArticles = localStorage.length - 1;
-  console.log(compteurDesArticles);
-  console.log("passage dans le if pour le local");
-}
-
 // Recuperation des informations du lien
 function recuperationURL() {
   const lienDeLaFenetre = window.location;
@@ -116,12 +108,14 @@ boutonPanier.addEventListener("click", function () {
     panierLocal[compteurDesArticles] = {
       id: Produitselectionne.id,
       couleur: Produitselectionne.color,
-      nombre: Produitselectionne.quantity,
+      quantite: Produitselectionne.quantity,
     };
-
     console.log("stock dans le panier");
     console.log(panierLocal);
+    localStorage.setItem(
+      `produit ${compteurDesArticles}`,
+      JSON.stringify(panierLocal)
+    );
+    compteurDesArticles++;
   }
-  localStorage.setItem("produit", JSON.stringify(panierLocal));
-  compteurDesArticles++;
 });
