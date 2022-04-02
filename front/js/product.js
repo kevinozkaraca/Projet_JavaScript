@@ -112,7 +112,18 @@ boutonPanier.addEventListener("click", function () {
     };
     console.log("stock dans le panier");
     console.log(localStorage);
-    localStorage.setItem(`produit`, JSON.stringify(panierLocal));
+    console.log(compteurDesArticles);
+    if (compteurDesArticles == 0) {
+      localStorage.setItem(`produit`, JSON.stringify(panierLocal));
+      console.log(typeof localStorage);
+    } else {
+      /*localStorage[compteurDesArticles] = Produitselectionne;
+      localStorage.setItem(
+        `produit`,
+        JSON.stringify(produit.panierLocal[compteurDesArticles])
+      );*/
+      console.log("Pas encore trouve");
+    }
     compteurDesArticles++;
   }
 });
