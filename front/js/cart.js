@@ -1,10 +1,15 @@
 "use strict";
 
-// code a modifier :
+// Variables utilisees
+const formulaire = document.querySelector("section");
+const textVotrePanier = document.querySelector("H1");
+// Recuperation du lien d'arrive et message en cas d'erreur
 
-/*
-create element .... foreach
-*/
+if (localStorage.length == 0) {
+  console.log("Formulaire cache car pas d'article");
+  textVotrePanier.innerText = "Votre panier est vide";
+  formulaire.style.display = "none";
+}
 
 // Regex a reviser
 // Variables pour les saisies et les messages d'erreur pour le formulaire
@@ -44,8 +49,6 @@ order.addEventListener("click", function () {
 });
 
 // Gestion des messages à afficher en cas d'erreur
-
-// Le code du mail est bon, vérifier le reste avec les regex à modifier
 
 function validationFirstName() {
   if (regexFirstName.test(firstName.value)) {

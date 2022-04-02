@@ -1,7 +1,3 @@
-// ----- API et Affichage sur le site ------
-// Lancement de l'API dans le dossier back> npm install
-//                                    back> node server
-//                                      port 3000
 // Adresse de l'API
 const httpAPI = "http://localhost:3000/api/products/";
 
@@ -21,15 +17,13 @@ async function recuperationArticles() {
     });
 }
 
-// Récupération des données et intégration dans le DOM
+// Récupération des données et intégration dans le DOM / DOMParser analyse le contenu HTML
 async function articlesAPI() {
-  // DOMParser analyse le contenu HTML : https://developer.mozilla.org/fr/docs/Web/API/DOMParser
+  // DOMParser analyse le contenu HTML
   const analyser = new DOMParser();
-  // Products pour le products aui se trouve dans l'API
   let products = await recuperationArticles();
   console.log("articles de l'API --->", products);
   let blocHTMLArticle = document.getElementById("items");
-
   // Boucle de l'ensemble des produits et affichage dans le DOM
   for (i = 0; i < products.length; i++) {
     let gabaritHTML = `<a href="./product.html?id=${products[i]._id}">
@@ -41,7 +35,6 @@ async function articlesAPI() {
       </a>`;
 
     console.log("Le produit a l'index " + i + " est affiché");
-
     // Analyse une chaîne de caractères et retourne un HTMLDocument.
     const affichageArticles = analyser.parseFromString(
       gabaritHTML,

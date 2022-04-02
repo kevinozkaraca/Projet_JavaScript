@@ -9,7 +9,7 @@ const descriptionProduit = document.getElementById("description");
 const couleurProduit = document.getElementById("colors");
 const quantiteProduit = document.getElementById("quantity");
 let boutonPanier = document.getElementById("addToCart");
-let compteurDesArticles = localStorage.length - 1;
+let compteurDesArticles = localStorage.length;
 let panierLocal = new Object();
 
 // Recuperation des informations du lien
@@ -30,10 +30,10 @@ console.log(afficheURL);
 if (afficheURL == "http://localhost:3000/api/products/null") {
   console.log("Aucun article à afficher");
   descriptionProduit.innerText = "Aucun produit à Afficher";
+  descriptionProduit.style.fontSize = "50px";
   quantiteProduit.setAttribute("min", 0);
   quantiteProduit.setAttribute("max", 0);
   boutonPanier.disabled = true;
-  alert("Aucun produit selectionne");
 } else {
   async function recuperationArticles() {
     recuperationURL();
@@ -111,11 +111,8 @@ boutonPanier.addEventListener("click", function () {
       quantite: Produitselectionne.quantity,
     };
     console.log("stock dans le panier");
-    console.log(panierLocal);
-    localStorage.setItem(
-      `produit ${compteurDesArticles}`,
-      JSON.stringify(panierLocal)
-    );
+    console.log(localStorage);
+    localStorage.setItem(`produit`, JSON.stringify(panierLocal));
     compteurDesArticles++;
   }
 });
