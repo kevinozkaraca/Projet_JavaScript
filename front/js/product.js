@@ -110,20 +110,11 @@ boutonPanier.addEventListener("click", function () {
       couleur: Produitselectionne.color,
       quantite: Produitselectionne.quantity,
     };
-    console.log("stock dans le panier");
-    console.log(localStorage);
-    console.log(compteurDesArticles);
-    if (compteurDesArticles == 0) {
-      localStorage.setItem(`produit`, JSON.stringify(panierLocal));
-      console.log(typeof localStorage);
-    } else {
-      /*localStorage[compteurDesArticles] = Produitselectionne;
-      localStorage.setItem(
-        `produit`,
-        JSON.stringify(produit.panierLocal[compteurDesArticles])
-      );*/
-      console.log("Pas encore trouve");
-    }
+    // Mise dans le local starage les uns a la suite des autres
+    localStorage.setItem(
+      `produit${compteurDesArticles}`,
+      JSON.stringify(panierLocal[compteurDesArticles])
+    );
     compteurDesArticles++;
   }
 });
