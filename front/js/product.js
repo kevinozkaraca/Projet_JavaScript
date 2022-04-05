@@ -10,7 +10,6 @@ const couleurProduit = document.getElementById("colors");
 const quantiteProduit = document.getElementById("quantity");
 let boutonPanier = document.getElementById("addToCart");
 let compteurDesArticles = localStorage.length;
-let panierLocal = new Object();
 
 // Recuperation des informations du lien
 function recuperationURL() {
@@ -28,12 +27,15 @@ console.log(afficheURL);
 
 // Récupération des produits a afficher / Affichage sans produit
 if (afficheURL == "http://localhost:3000/api/products/null") {
+  const descriptionProduit = document.getElementById("description");
+  const divProduit = document.querySelector("p");
   console.log("Aucun article à afficher");
   descriptionProduit.innerText = "Aucun produit à Afficher";
   descriptionProduit.style.fontSize = "50px";
   quantiteProduit.setAttribute("min", 0);
   quantiteProduit.setAttribute("max", 0);
   boutonPanier.disabled = true;
+  divProduit.style.display = "none";
 } else {
   async function recuperationArticles() {
     recuperationURL();
@@ -90,31 +92,42 @@ boutonPanier.addEventListener("click", function () {
   } else if (quantiteSelectionnee > 100) {
     console.log("Au dessus de la quantite possible");
     alert("La quantite est superieur a 100");
-  } else if (descriptionProduit.innerText == "Aucun produit à Afficher") {
-    console.log("Aucun article affiche");
   } else {
     const lienDeLaFenetre = window.location;
     const recupURL = new URL(lienDeLaFenetre);
     let productId = recupURL.searchParams.get("id");
-    const Produitselectionne = {
+    const produitSelectionne = {
       id: productId,
       color: couleurChoisi,
       quantity: quantiteSelectionnee,
     };
     // LocalStorage
-    console.log("pret a recevoir le panier");
-    console.log(Produitselectionne);
-    // Produitselectionne dans un tableau different
-    panierLocal[compteurDesArticles] = {
-      id: Produitselectionne.id,
-      couleur: Produitselectionne.color,
-      quantite: Produitselectionne.quantity,
-    };
-    // Mise dans le local starage les uns a la suite des autres
-    localStorage.setItem(
-      `produit${compteurDesArticles}`,
-      JSON.stringify(panierLocal[compteurDesArticles])
-    );
-    compteurDesArticles++;
+    ajoutProduit(produitSelectionne);
   }
 });
+
+function ajoutProduit(produitSelectionne) {
+  let panierLocal = [];
+  if (localStorage.cart) {
+    panierLocal = JSON.parse(localStorage.cart);
+  }
+  if (panierLocal.length) {
+    let cartModify = false;
+    panierLocal.forEach((element) => {
+      if (
+        element.id == produitSelectionne.id &&
+        element.color == produitSelectionne.color
+      ) {
+        element.quantity += produitSelectionne.quantity;
+        cartModify = true;
+      }
+    });
+    if (!cartModify) {
+      panierLocal.push(produitSelectionne);
+    }
+    localStorage.setItem("cart", JSON.stringify(panierLocal));
+  } else {
+    panierLocal.push(produitSelectionne);
+    localStorage.setItem("cart", JSON.stringify(panierLocal));
+  }
+}

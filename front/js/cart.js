@@ -4,8 +4,7 @@
 const formulaire = document.querySelector("section");
 const textVotrePanier = document.querySelector("H1");
 // Recuperation du lien d'arrive et message en cas d'erreur
-
-if (localStorage.length == 0) {
+if (!localStorage.cart) {
   console.log("Formulaire cache car pas d'article");
   textVotrePanier.innerText = "Votre panier est vide";
   formulaire.style.display = "none";
