@@ -1,10 +1,9 @@
 "use strict";
-
+let ProduitsAffiches = false;
 //Recuperation du localStorage
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
-
-// Recuperation du lien d'arrive et message en cas d'erreur
-if (!localStorage.cart) {
+// Affichage du panier et message au cas ou le panier est vide
+if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined) {
   const formulaire = document.querySelector("section");
   const textVotrePanier = document.querySelector("H1");
   console.log("Formulaire cache car pas d'article");
@@ -12,7 +11,7 @@ if (!localStorage.cart) {
   formulaire.style.display = "none";
 } else {
   for (let cart in produitsDansLePanier) {
-    //Creattion des elements utiles
+    //Creation des elements utiles
     const baliseArticle = document.createElement("article");
     const creationDeDiv1 = document.createElement("div");
     const creationDeDiv2 = document.createElement("div");
@@ -52,17 +51,22 @@ if (!localStorage.cart) {
                 </div>
               </article> 
     */
+
+    // Ciblage
     ciblageDuContenu.appendChild(baliseArticle);
     baliseArticle.setAttribute("class", "cart__item");
     baliseArticle.setAttribute("data-id", produitsDansLePanier[cart].id);
     baliseArticle.setAttribute("data-color", produitsDansLePanier[cart].color);
+    // div 1
     baliseArticle.appendChild(creationDeDiv1);
     creationDeDiv1.setAttribute("class", "cart__item__img");
     creationDeDiv1.appendChild(IMGproduit);
     IMGproduit.setAttribute("src", produitsDansLePanier[cart].image);
     IMGproduit.setAttribute("alt", produitsDansLePanier[cart].textAlt);
+    // div 2
     baliseArticle.appendChild(creationDeDiv2);
     creationDeDiv2.setAttribute("class", "cart__item__content");
+    // div 3
     creationDeDiv2.appendChild(creationDeDiv3);
     creationDeDiv3.setAttribute("class", "cart__item__content__description");
     creationDeDiv3.appendChild(nomDuProduit);
@@ -70,9 +74,11 @@ if (!localStorage.cart) {
     creationDeDiv3.appendChild(paraCouleur);
     paraCouleur.innerText = produitsDansLePanier[cart].color;
     creationDeDiv3.appendChild(paraPrix);
-    paraPrix.innerText = produitsDansLePanier[cart].prix;
+    paraPrix.innerText = `${produitsDansLePanier[cart].prix} €`;
+    // div 4
     creationDeDiv2.appendChild(creationDeDiv4);
     creationDeDiv4.setAttribute("class", "cart__item__content__settings");
+    // div 5
     creationDeDiv4.appendChild(creationDeDiv5);
     creationDeDiv5.setAttribute("class", "cart__item__content__settings__quantity");
     creationDeDiv5.appendChild(paraQuantite);
@@ -84,15 +90,31 @@ if (!localStorage.cart) {
     inputQuantite.setAttribute("min", "1");
     inputQuantite.setAttribute("max", "100");
     inputQuantite.setAttribute("value", produitsDansLePanier[cart].quantity);
+    // div 6
     creationDeDiv4.appendChild(creationDeDiv6);
     creationDeDiv6.setAttribute("class", "cart__item__content__settings__delete");
     creationDeDiv6.appendChild(paraSUp);
     paraSUp.setAttribute("class", "deleteItem");
     paraSUp.innerText = "Supprimer";
+
+    ProduitsAffiches = true;
+  }
+  // Bouton 'Supprimer'
+  if (ProduitsAffiches == true) {
+    const boutonSupp = document.querySelectorAll(".deleteItem");
+    for (let i = 0; i < boutonSupp.length; i++) {
+      boutonSupp[i].addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log(produitsDansLePanier[i]);
+        //location.reload();
+        if (localStorage.cart == undefined) {
+          localStorage.clear();
+        }
+      });
+    }
   }
 }
 
-// Regex a reviser
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 
 let order = document.getElementById("order");
