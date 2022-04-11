@@ -1,7 +1,6 @@
 "use strict";
 
 //Recuperation du localStorage
-
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
 if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined) {
   const formulaire = document.querySelector("section");
@@ -15,6 +14,7 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
 function init() {
   displayProduct(produitsDansLePanier);
   refreshPrices();
+  // validationDuPanier() a modifier
 }
 // Affichage du panier et message au cas ou le panier est vide
 function displayProduct(produitsDansLePanier) {
@@ -34,7 +34,7 @@ function displayProduct(produitsDansLePanier) {
     const paraQuantite = document.createElement("p");
     const inputQuantite = document.createElement("input");
     const paraSUp = document.createElement("p");
-    const ciblageDuContenu = document.querySelector("section");
+    const ciblageDuContenu = document.querySelector("#cart__items");
     // Ciblage A REVOIR
     ciblageDuContenu.appendChild(baliseArticle);
     baliseArticle.setAttribute("class", "cart__item");
@@ -65,7 +65,7 @@ function displayProduct(produitsDansLePanier) {
     creationDeDiv4.appendChild(creationDeDiv5);
     creationDeDiv5.setAttribute("class", "cart__item__content__settings__quantity");
     creationDeDiv5.appendChild(paraQuantite);
-    paraQuantite.innerText = produitsDansLePanier[cart].quantity;
+    paraQuantite.innerText = "Quantité : ";
     creationDeDiv5.appendChild(inputQuantite);
     inputQuantite.setAttribute("type", "number");
     inputQuantite.setAttribute("class", "itemQuantity");
@@ -81,7 +81,6 @@ function displayProduct(produitsDansLePanier) {
     paraSUp.innerText = "Supprimer";
   }
 }
-
 const boutonSupp = document.querySelectorAll(".deleteItem");
 boutonSupp.forEach((element) => {
   element.addEventListener("click", (e) => {
@@ -93,9 +92,12 @@ boutonSupp.forEach((element) => {
     };
     console.log(produitSelectionne);
     supprimerProduit(produitSelectionne);
+    refreshPrices();
+    location.reload();
   });
 });
 
+// Mise a jour des prix
 function refreshPrices() {
   let panierLocal = [];
   if (localStorage.cart) {
@@ -108,30 +110,15 @@ function refreshPrices() {
     total += qte * element.prix;
   });
   document.getElementById("totalQuantity").innerHTML = qte;
-
   document.getElementById("totalPrice").innerHTML = total;
 }
 
+// Suppression du produit
 function supprimerProduit(produitSelectionne) {
-  /*const boutonSupp = document.querySelectorAll(".deleteItem");
-    for (let i = 0; i < boutonSupp.length; i++) {
-      boutonSupp[i].addEventListener("click", (e) => {
-        e.preventDefault();
-        console.log(produitsDansLePanier[i]);
-        //localStorage.removeItem(produitsDansLePanier[i]);
-        //------------------------------------------problem
-        //location.reload();
-        if (localStorage.cart == undefined) {
-          localStorage.clear();
-          location.reload();
-        }
-      });
-    }*/
   let panierLocal = [];
   if (localStorage.cart) {
     panierLocal = JSON.parse(localStorage.cart);
   }
-
   panierLocal.forEach((element, index) => {
     if (element.id == produitSelectionne.id && element.color == produitSelectionne.color) {
       panierLocal.splice(index, 1);
@@ -143,6 +130,9 @@ function supprimerProduit(produitSelectionne) {
     localStorage.removeItem("cart");
   }
 }
+
+// Modification d un produit Mettre le refreshprice() dedans
+
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 
 function validationDuPanier() {
@@ -183,7 +173,6 @@ function validationDuPanier() {
     });
 
     // Gestion des messages à afficher en cas d'erreur
-
     function validationFirstName() {
       if (regexFirstName.test(firstName.value)) {
         console.log("Le regex du prénom est passé");
@@ -237,4 +226,3 @@ function validationDuPanier() {
   }
 }
 validationDuPanier();
-// Gestion des erreurs pour le formulaire et tests lors de la validation
