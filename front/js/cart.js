@@ -1,8 +1,14 @@
 "use strict";
+// Debloque le boutton supprimer
+
 let ProduitsAffiches = false;
+
 //Recuperation du localStorage
+
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
+
 // Affichage du panier et message au cas ou le panier est vide
+
 if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined) {
   const formulaire = document.querySelector("section");
   const textVotrePanier = document.querySelector("H1");
@@ -29,28 +35,28 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
     const ciblageDuContenu = document.querySelector("section");
     // Affichage des elements
     /*
-              <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-    div1        <div class="cart__item__img">
-                  <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-                </div>
-    div2        <div class="cart__item__content">
-    div3          <div class="cart__item__content__description">
-                    <h2>Nom du produit</h2>
-                    <p>Vert</p>
-                    <p>42,00 €</p>
+                <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+      div1        <div class="cart__item__img">
+                    <img src="../images/product01.jpg" alt="Photographie d'un canapé">
                   </div>
-    div4          <div class="cart__item__content__settings">
-    div5            <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+      div2        <div class="cart__item__content">
+      div3          <div class="cart__item__content__description">
+                      <h2>Nom du produit</h2>
+                      <p>Vert</p>
+                      <p>42,00 €</p>
                     </div>
-    div6            <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
+      div4          <div class="cart__item__content__settings">
+      div5            <div class="cart__item__content__settings__quantity">
+                        <p>Qté : </p>
+                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                      </div>
+      div6            <div class="cart__item__content__settings__delete">
+                        <p class="deleteItem">Supprimer</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article> 
-    */
+                </article> 
+      */
 
     // Ciblage
     ciblageDuContenu.appendChild(baliseArticle);
@@ -106,10 +112,26 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
       boutonSupp[i].addEventListener("click", (e) => {
         e.preventDefault();
         console.log(produitsDansLePanier[i]);
+        //localStorage.removeItem(produitsDansLePanier[i]);
+        //------------------------------------------problem
         //location.reload();
         if (localStorage.cart == undefined) {
           localStorage.clear();
+          location.reload();
         }
+      });
+    }
+    // Modification de la quantite
+
+    let inputQuantite = document.querySelectorAll(".itemQuantity");
+    for (let i = 0; i < inputQuantite.length; i++) {
+      inputQuantite[i].addEventListener("change", (e) => {
+        e.preventDefault();
+        let valeurNouvelle = e.target.value;
+        console.log(valeurNouvelle);
+        console.log(produitsDansLePanier[i]);
+        //------------------------------------------problem
+        //location.reload();
       });
     }
   }
@@ -117,89 +139,96 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
 
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 
-let order = document.getElementById("order");
+function ValidationDuPanier() {
+  let validPanier = false;
+  let order = document.getElementById("order");
 
-let firstName = document.getElementById("firstName");
-let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-let regexFirstName = /[a-zA-Z]/;
+  let firstName = document.getElementById("firstName");
+  let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+  let regexFirstName = /^[a-zA-Z ]+$/;
 
-let lastName = document.getElementById("lastName");
-let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-let regexLastName =
-  /[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]/;
+  let lastName = document.getElementById("lastName");
+  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+  let regexLastName = /^[a-zA-Z ]+$/;
 
-let address = document.getElementById("address");
-let addressErrorMsg = document.getElementById("addressErrorMsg");
-let regexAddress = /^[a-zA-Z0-9\s,'-]*$/;
+  let address = document.getElementById("address");
+  let addressErrorMsg = document.getElementById("addressErrorMsg");
+  let regexAddress =
+    /(\d+)?\,?\s?(bis|ter|quater)?\,?\s?(rue|avenue|boulevard|r|av|ave|bd|bvd|square|sente|impasse|cours|esplanade|allée|résidence|parc|rond-point|chemin|côte|place|cité|quai|passage|lôtissement|hameau)?\s([a-zA-Zà-ÿ0-9\s]{2,})+$/gi;
 
-let city = document.getElementById("city");
-let cityErrorMsg = document.getElementById("cityErrorMsg");
-let regexCity = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+  let city = document.getElementById("city");
+  let cityErrorMsg = document.getElementById("cityErrorMsg");
+  let regexCity = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
 
-let email = document.getElementById("email");
-let emailErrorMsg = document.getElementById("emailErrorMsg");
-let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  let email = document.getElementById("email");
+  let emailErrorMsg = document.getElementById("emailErrorMsg");
+  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+  // ---------------------------Modifier les conditions
+  if (validPanier == false) {
+    order.disabled = true;
+    order.addEventListener("click", function () {
+      console.log('Bouton "Commander !" cliqué');
+      validationFirstName();
+      validationLastName();
+      validationAddress();
+      validationCity();
+      validationEmail();
+    });
+
+    // Gestion des messages à afficher en cas d'erreur
+
+    function validationFirstName() {
+      if (regexFirstName.test(firstName.value)) {
+        console.log("Le regex du prénom est passé");
+        return true;
+      } else {
+        console.log("Le regex du prénom n'est pas passé");
+        firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
+        return false;
+      }
+    }
+    function validationLastName() {
+      if (regexLastName.test(lastName.value)) {
+        console.log("Le regex du nom est passé");
+        return true;
+      } else {
+        console.log("Le regex du nom n'est pas passé");
+        emailErrorMsg.textContent = "Veuillez saisir un nom correct";
+        return false;
+      }
+    }
+    function validationAddress() {
+      if (regexAddress.test(address.value)) {
+        console.log("Le regex de l'adresse est passé");
+        return true;
+      } else {
+        console.log("Le regex de l'adresse n'est pas passé");
+        addressErrorMsg.textContent = "Veuillez saisir une adresse correcte";
+        return false;
+      }
+    }
+    function validationCity() {
+      if (regexCity.test(city.value)) {
+        console.log("Le regex de la ville est passé");
+        return true;
+      } else {
+        console.log("Le regex de la ville n'est pas passé");
+        cityErrorMsg.textContent = "Veuillez saisir une ville correcte";
+        return false;
+      }
+    }
+    function validationEmail() {
+      if (regexEmail.test(email.value)) {
+        console.log("Le regex du mail est passé");
+        return true;
+      } else {
+        console.log("Le regex du mail n'est pas passé");
+        emailErrorMsg.textContent = "Veuillez saisir un mail correct";
+        return false;
+      }
+    }
+  }
+}
+ValidationDuPanier();
 // Gestion des erreurs pour le formulaire et tests lors de la validation
-
-order.addEventListener("click", function () {
-  console.log('Bouton "Commander !" cliqué');
-  validationFirstName();
-  validationLastName();
-  validationAddress();
-  validationCity();
-  validationEmail();
-});
-
-// Gestion des messages à afficher en cas d'erreur
-
-function validationFirstName() {
-  if (regexFirstName.test(firstName.value)) {
-    console.log("Le regex du prénom est passé");
-    return true;
-  } else {
-    console.log("Le regex du prénom n'est pas passé");
-    firstNameErrorMsg.textContent("Veuillez saisir un prénom correct");
-    return false;
-  }
-}
-function validationLastName() {
-  if (regexLastName.test(lastName.value)) {
-    console.log("Le regex du nom est passé");
-    return true;
-  } else {
-    console.log("Le regex du nom n'est pas passé");
-    emailErrorMsg.textContent = "Veuillez saisir un nom correct";
-    return false;
-  }
-}
-function validationAddress() {
-  if (regexAddress.test(address.value)) {
-    console.log("Le regex de l'adresse est passé");
-    return true;
-  } else {
-    console.log("Le regex de l'adresse n'est pas passé");
-    addressErrorMsg.textContent = "Veuillez saisir une adresse correcte";
-    return false;
-  }
-}
-function validationCity() {
-  if (regexCity.test(city.value)) {
-    console.log("Le regex de la ville est passé");
-    return true;
-  } else {
-    console.log("Le regex de la ville n'est pas passé");
-    cityErrorMsg.textContent = "Veuillez saisir une ville correcte";
-    return false;
-  }
-}
-function validationEmail() {
-  if (regexEmail.test(email.value)) {
-    console.log("Le regex du mail est passé");
-    return true;
-  } else {
-    console.log("Le regex du mail n'est pas passé");
-    emailErrorMsg.textContent = "Veuillez saisir un mail correct";
-    return false;
-  }
-}
