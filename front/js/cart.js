@@ -1,14 +1,8 @@
 "use strict";
-// Debloque le boutton supprimer
-
-let ProduitsAffiches = false;
 
 //Recuperation du localStorage
 
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
-
-// Affichage du panier et message au cas ou le panier est vide
-
 if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined) {
   const formulaire = document.querySelector("section");
   const textVotrePanier = document.querySelector("H1");
@@ -16,6 +10,14 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
   textVotrePanier.innerText = "Votre panier est vide";
   formulaire.style.display = "none";
 } else {
+  init();
+}
+function init() {
+  displayProduct(produitsDansLePanier);
+  refreshPrices();
+}
+// Affichage du panier et message au cas ou le panier est vide
+function displayProduct(produitsDansLePanier) {
   for (let cart in produitsDansLePanier) {
     //Creation des elements utiles
     const baliseArticle = document.createElement("article");
@@ -33,32 +35,7 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
     const inputQuantite = document.createElement("input");
     const paraSUp = document.createElement("p");
     const ciblageDuContenu = document.querySelector("section");
-    // Affichage des elements
-    /*
-                <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-      div1        <div class="cart__item__img">
-                    <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-                  </div>
-      div2        <div class="cart__item__content">
-      div3          <div class="cart__item__content__description">
-                      <h2>Nom du produit</h2>
-                      <p>Vert</p>
-                      <p>42,00 €</p>
-                    </div>
-      div4          <div class="cart__item__content__settings">
-      div5            <div class="cart__item__content__settings__quantity">
-                        <p>Qté : </p>
-                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                      </div>
-      div6            <div class="cart__item__content__settings__delete">
-                        <p class="deleteItem">Supprimer</p>
-                      </div>
-                    </div>
-                  </div>
-                </article> 
-      */
-
-    // Ciblage
+    // Ciblage A REVOIR
     ciblageDuContenu.appendChild(baliseArticle);
     baliseArticle.setAttribute("class", "cart__item");
     baliseArticle.setAttribute("data-id", produitsDansLePanier[cart].id);
@@ -102,12 +79,41 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
     creationDeDiv6.appendChild(paraSUp);
     paraSUp.setAttribute("class", "deleteItem");
     paraSUp.innerText = "Supprimer";
-
-    ProduitsAffiches = true;
   }
-  // Bouton 'Supprimer'
-  if (ProduitsAffiches == true) {
-    const boutonSupp = document.querySelectorAll(".deleteItem");
+}
+
+const boutonSupp = document.querySelectorAll(".deleteItem");
+boutonSupp.forEach((element) => {
+  element.addEventListener("click", (e) => {
+    e.preventDefault();
+    let articleTarget = element.closest("article");
+    const produitSelectionne = {
+      id: articleTarget.getAttribute("data-id"),
+      color: articleTarget.getAttribute("data-color"),
+    };
+    console.log(produitSelectionne);
+    supprimerProduit(produitSelectionne);
+  });
+});
+
+function refreshPrices() {
+  let panierLocal = [];
+  if (localStorage.cart) {
+    panierLocal = JSON.parse(localStorage.cart);
+  }
+  let qte = 0;
+  let total = 0;
+  panierLocal.forEach((element) => {
+    qte += element.quantity;
+    total += qte * element.prix;
+  });
+  document.getElementById("totalQuantity").innerHTML = qte;
+
+  document.getElementById("totalPrice").innerHTML = total;
+}
+
+function supprimerProduit(produitSelectionne) {
+  /*const boutonSupp = document.querySelectorAll(".deleteItem");
     for (let i = 0; i < boutonSupp.length; i++) {
       boutonSupp[i].addEventListener("click", (e) => {
         e.preventDefault();
@@ -120,26 +126,26 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
           location.reload();
         }
       });
-    }
-    // Modification de la quantite
+    }*/
+  let panierLocal = [];
+  if (localStorage.cart) {
+    panierLocal = JSON.parse(localStorage.cart);
+  }
 
-    let inputQuantite = document.querySelectorAll(".itemQuantity");
-    for (let i = 0; i < inputQuantite.length; i++) {
-      inputQuantite[i].addEventListener("change", (e) => {
-        e.preventDefault();
-        let valeurNouvelle = e.target.value;
-        console.log(valeurNouvelle);
-        console.log(produitsDansLePanier[i]);
-        //------------------------------------------problem
-        //location.reload();
-      });
+  panierLocal.forEach((element, index) => {
+    if (element.id == produitSelectionne.id && element.color == produitSelectionne.color) {
+      panierLocal.splice(index, 1);
     }
+  });
+  if (panierLocal.length) {
+    localStorage.setItem("cart", JSON.stringify(panierLocal));
+  } else {
+    localStorage.removeItem("cart");
   }
 }
-
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 
-function ValidationDuPanier() {
+function validationDuPanier() {
   let validPanier = false;
   let order = document.getElementById("order");
 
@@ -230,5 +236,5 @@ function ValidationDuPanier() {
     }
   }
 }
-ValidationDuPanier();
+validationDuPanier();
 // Gestion des erreurs pour le formulaire et tests lors de la validation
