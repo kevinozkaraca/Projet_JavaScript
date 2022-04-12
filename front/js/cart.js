@@ -14,7 +14,8 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
 function init() {
   displayProduct(produitsDansLePanier);
   refreshPrices();
-  // validationDuPanier() a modifier
+  //modifQuantite();
+  validationDuPanier();
 }
 // Affichage du panier et message au cas ou le panier est vide
 function displayProduct(produitsDansLePanier) {
@@ -35,7 +36,7 @@ function displayProduct(produitsDansLePanier) {
     const inputQuantite = document.createElement("input");
     const paraSUp = document.createElement("p");
     const ciblageDuContenu = document.querySelector("#cart__items");
-    // Ciblage A REVOIR
+    // Ciblage
     ciblageDuContenu.appendChild(baliseArticle);
     baliseArticle.setAttribute("class", "cart__item");
     baliseArticle.setAttribute("data-id", produitsDansLePanier[cart].id);
@@ -130,11 +131,21 @@ function supprimerProduit(produitSelectionne) {
     localStorage.removeItem("cart");
   }
 }
-
+/*
 // Modification d un produit Mettre le refreshprice() dedans
+function modifQuantite() {
+  let panierLocal = [];
+  let inputQuantite = document.querySelectorAll(".itemQuantity");
+  inputQuantite.forEach((element) => {
+    element.addEventListener("change", (e) => {
+      e.preventDefault();
+      console.log(element.value);
+      valeurChanger = element.value;
+    });
+  });
+}*/
 
 // Variables pour les saisies et les messages d'erreur pour le formulaire
-
 function validationDuPanier() {
   let validPanier = false;
   let order = document.getElementById("order");
@@ -160,69 +171,44 @@ function validationDuPanier() {
   let emailErrorMsg = document.getElementById("emailErrorMsg");
   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-  // ---------------------------Modifier les conditions
-  if (validPanier == false) {
-    order.disabled = true;
-    order.addEventListener("click", function () {
-      console.log('Bouton "Commander !" cliqué');
-      validationFirstName();
-      validationLastName();
-      validationAddress();
-      validationCity();
-      validationEmail();
-    });
-
-    // Gestion des messages à afficher en cas d'erreur
-    function validationFirstName() {
-      if (regexFirstName.test(firstName.value)) {
-        console.log("Le regex du prénom est passé");
-        return true;
-      } else {
-        console.log("Le regex du prénom n'est pas passé");
-        firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
-        return false;
-      }
+  firstName.addEventListener("change", function () {
+    if (regexFirstName.test(firstName.value)) {
+      return true;
+    } else {
+      firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
+      return false;
     }
-    function validationLastName() {
-      if (regexLastName.test(lastName.value)) {
-        console.log("Le regex du nom est passé");
-        return true;
-      } else {
-        console.log("Le regex du nom n'est pas passé");
-        emailErrorMsg.textContent = "Veuillez saisir un nom correct";
-        return false;
-      }
+  });
+  lastName.addEventListener("change", function () {
+    if (regexFirstName.test(regexLastName.value)) {
+      return true;
+    } else {
+      lastNameErrorMsg.innerText = "Veuillez saisir un nom correct";
+      return false;
     }
-    function validationAddress() {
-      if (regexAddress.test(address.value)) {
-        console.log("Le regex de l'adresse est passé");
-        return true;
-      } else {
-        console.log("Le regex de l'adresse n'est pas passé");
-        addressErrorMsg.textContent = "Veuillez saisir une adresse correcte";
-        return false;
-      }
+  });
+  address.addEventListener("change", function () {
+    if (regexAddress.test(address.value)) {
+      return true;
+    } else {
+      addressErrorMsg.innerText = "Veuillez saisir une adresse correcte";
+      return false;
     }
-    function validationCity() {
-      if (regexCity.test(city.value)) {
-        console.log("Le regex de la ville est passé");
-        return true;
-      } else {
-        console.log("Le regex de la ville n'est pas passé");
-        cityErrorMsg.textContent = "Veuillez saisir une ville correcte";
-        return false;
-      }
+  });
+  city.addEventListener("change", function () {
+    if (regexCity.test(city.value)) {
+      return true;
+    } else {
+      cityErrorMsg.innerText = "Veuillez saisir un nom de ville correct";
+      return false;
     }
-    function validationEmail() {
-      if (regexEmail.test(email.value)) {
-        console.log("Le regex du mail est passé");
-        return true;
-      } else {
-        console.log("Le regex du mail n'est pas passé");
-        emailErrorMsg.textContent = "Veuillez saisir un mail correct";
-        return false;
-      }
+  });
+  email.addEventListener("change", function () {
+    if (regexEmail.test(email.value)) {
+      return true;
+    } else {
+      emailErrorMsg.innerText = "Veuillez saisir une adresse mail valide";
+      return false;
     }
-  }
+  });
 }
-validationDuPanier();
