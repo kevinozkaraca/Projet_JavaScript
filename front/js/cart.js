@@ -74,6 +74,7 @@ function displayProduct(produitsDansLePanier) {
     inputQuantite.setAttribute("min", "1");
     inputQuantite.setAttribute("max", "100");
     inputQuantite.setAttribute("value", produitsDansLePanier[cart].quantity);
+    inputQuantite.setAttribute("id", produitsDansLePanier[cart].id);
     // div 6
     creationDeDiv4.appendChild(creationDeDiv6);
     creationDeDiv6.setAttribute("class", "cart__item__content__settings__delete");
@@ -134,102 +135,115 @@ function supprimerProduit(produitSelectionne) {
 
 // Modification d un produit Mettre le refreshprice() dedans
 
-function modifQuantite() {
+function modifQuantite(produitSelectionne) {
   let panierLocal = JSON.parse(localStorage.cart);
   let inputQuantite = document.querySelectorAll(".itemQuantity");
   inputQuantite.forEach((element) => {
     element.addEventListener("change", (e) => {
-      //e.preventDefault();
+      e.preventDefault();
       let changeQte = parseInt(e.path[0].value);
-      console.log(parseInt(e.path[0].value));
-      /*for (let i; i < panierLocal.length; i++) {
-        element.quantity = changeQte;
-        localStorage.setItem("cart", JSON.stringify(panierLocal));
-        refreshPrices();
-      }*/
-
       panierLocal.forEach((element) => {
-        element.quantity = changeQte;
-        localStorage.setItem("cart", JSON.stringify(panierLocal));
-        refreshPrices();
+        if (element.id == e.path[0].id) {
+          element.quantity = changeQte;
+          localStorage.setItem("cart", JSON.stringify(panierLocal));
+          location.reload();
+        }
       });
     });
   });
-
-  //document.getElementById("totalPrice").innerHTML = element.quantity;
 }
 
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 function validationDuPanier() {
-  let validPanier = false;
-  let order = document.getElementById("order");
-
+  // Prenom
   let firstName = document.getElementById("firstName");
   let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
   let regexFirstName =
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
-
-  let lastName = document.getElementById("lastName");
-  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-  let regexLastName =
-    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
-
-  let address = document.getElementById("address");
-  let addressErrorMsg = document.getElementById("addressErrorMsg");
-  let regexAddress =
-    /(\d+)?\,?\s?(bis|ter|quater)?\,?\s?(rue|avenue|boulevard|r|av|ave|bd|bvd|square|sente|impasse|cours|esplanade|allée|résidence|parc|rond-point|chemin|côte|place|cité|quai|passage|lôtissement|hameau)?\s([a-zA-Zà-ÿ0-9\s]{2,})+$/gi;
-
-  let city = document.getElementById("city");
-  let cityErrorMsg = document.getElementById("cityErrorMsg");
-  let regexCity = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
-
-  let email = document.getElementById("email");
-  let emailErrorMsg = document.getElementById("emailErrorMsg");
-  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
   firstName.addEventListener("change", function () {
     if (regexFirstName.test(firstName.value)) {
-      firstNameErrorMsg.innerText = "";
+      firstNameErrorMsg.innerText = "  ";
+      firstNameErrorMsg.setAttribute("hidden", true);
+      checkValid();
       return true;
     } else {
       firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
       return false;
     }
   });
+  // Nom
+  let lastName = document.getElementById("lastName");
+  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+  let regexLastName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
   lastName.addEventListener("change", function () {
     if (regexLastName.test(lastName.value)) {
-      lastNameErrorMsg.innerText = "";
+      lastNameErrorMsg.innerText = "   ";
+      lastNameErrorMsg.setAttribute("hidden", true);
+      checkValid();
       return true;
     } else {
       lastNameErrorMsg.innerText = "Veuillez saisir un nom correct";
       return false;
     }
   });
+  // Adresse
+  let address = document.getElementById("address");
+  let addressErrorMsg = document.getElementById("addressErrorMsg");
+  let regexAddress =
+    /(\d+)?\,?\s?(bis|ter|quater)?\,?\s?(rue|avenue|boulevard|r|av|ave|bd|bvd|square|sente|impasse|cours|esplanade|allée|résidence|parc|rond-point|chemin|côte|place|cité|quai|passage|lôtissement|hameau)?\s([a-zA-Zà-ÿ0-9\s]{2,})+$/gi;
   address.addEventListener("change", function () {
     if (regexAddress.test(address.value)) {
-      addressErrorMsg.innerText = "";
+      addressErrorMsg.innerText = "  ";
+      addressErrorMsg.setAttribute("hidden", true);
+      checkValid();
       return true;
     } else {
       addressErrorMsg.innerText = "Veuillez saisir une adresse correcte";
       return false;
     }
   });
+  // Ville
+  let city = document.getElementById("city");
+  let cityErrorMsg = document.getElementById("cityErrorMsg");
+  let regexCity = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
   city.addEventListener("change", function () {
     if (regexCity.test(city.value)) {
-      cityErrorMsg.innerText = "";
+      cityErrorMsg.innerText = "  ";
+      cityErrorMsg.setAttribute("hidden", true);
+      checkValid();
       return true;
     } else {
       cityErrorMsg.innerText = "Veuillez saisir un nom de ville correct";
       return false;
     }
   });
+  // Email
+  let email = document.getElementById("email");
+  let emailErrorMsg = document.getElementById("emailErrorMsg");
+  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   email.addEventListener("change", function () {
     if (regexEmail.test(email.value)) {
       emailErrorMsg.innerText = "";
+      emailErrorMsg.setAttribute("hidden", true);
+      checkValid();
       return true;
     } else {
       emailErrorMsg.innerText = "Veuillez saisir une adresse mail valide";
       return false;
     }
   });
+}
+//Validation et passage a la page 'confirmation'
+function checkValid() {
+  if (
+    emailErrorMsg.hidden == true &&
+    cityErrorMsg.hidden == true &&
+    addressErrorMsg.hidden == true &&
+    lastNameErrorMsg.hidden == true &&
+    firstNameErrorMsg.hidden == true
+  ) {
+    let boutonCommander = document.getElementById("order");
+    boutonCommander.setAttribute("href", "/front/html/confirmation.html");
+  }
 }
