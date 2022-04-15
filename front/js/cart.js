@@ -2,7 +2,7 @@
 
 //Recuperation du localStorage
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
-if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined) {
+if (!localStorage.cart || localStorage.cart.length == 0 || localStorage.cart == undefined) {
   const formulaire = document.querySelector("section");
   const textVotrePanier = document.querySelector("H1");
   console.log("Formulaire cache car pas d'article");
@@ -14,7 +14,7 @@ if (!localStorage.cart || localStorage.length == 0 || localStorage == undefined)
 function init() {
   displayProduct(produitsDansLePanier);
   refreshPrices();
-  //modifQuantite();
+  modifQuantite();
   validationDuPanier();
 }
 // Affichage du panier et message au cas ou le panier est vide
@@ -131,19 +131,33 @@ function supprimerProduit(produitSelectionne) {
     localStorage.removeItem("cart");
   }
 }
-/*
+
 // Modification d un produit Mettre le refreshprice() dedans
+
 function modifQuantite() {
-  let panierLocal = [];
+  let panierLocal = JSON.parse(localStorage.cart);
   let inputQuantite = document.querySelectorAll(".itemQuantity");
   inputQuantite.forEach((element) => {
     element.addEventListener("change", (e) => {
-      e.preventDefault();
-      console.log(element.value);
-      valeurChanger = element.value;
+      //e.preventDefault();
+      let changeQte = parseInt(e.path[0].value);
+      console.log(parseInt(e.path[0].value));
+      /*for (let i; i < panierLocal.length; i++) {
+        element.quantity = changeQte;
+        localStorage.setItem("cart", JSON.stringify(panierLocal));
+        refreshPrices();
+      }*/
+
+      panierLocal.forEach((element) => {
+        element.quantity = changeQte;
+        localStorage.setItem("cart", JSON.stringify(panierLocal));
+        refreshPrices();
+      });
     });
   });
-}*/
+
+  //document.getElementById("totalPrice").innerHTML = element.quantity;
+}
 
 // Variables pour les saisies et les messages d'erreur pour le formulaire
 function validationDuPanier() {
@@ -152,11 +166,13 @@ function validationDuPanier() {
 
   let firstName = document.getElementById("firstName");
   let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-  let regexFirstName = /^[a-zA-Z ]+$/;
+  let regexFirstName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
 
   let lastName = document.getElementById("lastName");
   let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-  let regexLastName = /^[a-zA-Z ]+$/;
+  let regexLastName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
 
   let address = document.getElementById("address");
   let addressErrorMsg = document.getElementById("addressErrorMsg");
@@ -173,6 +189,7 @@ function validationDuPanier() {
 
   firstName.addEventListener("change", function () {
     if (regexFirstName.test(firstName.value)) {
+      firstNameErrorMsg.innerText = "";
       return true;
     } else {
       firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
@@ -180,7 +197,8 @@ function validationDuPanier() {
     }
   });
   lastName.addEventListener("change", function () {
-    if (regexFirstName.test(regexLastName.value)) {
+    if (regexLastName.test(lastName.value)) {
+      lastNameErrorMsg.innerText = "";
       return true;
     } else {
       lastNameErrorMsg.innerText = "Veuillez saisir un nom correct";
@@ -189,6 +207,7 @@ function validationDuPanier() {
   });
   address.addEventListener("change", function () {
     if (regexAddress.test(address.value)) {
+      addressErrorMsg.innerText = "";
       return true;
     } else {
       addressErrorMsg.innerText = "Veuillez saisir une adresse correcte";
@@ -197,6 +216,7 @@ function validationDuPanier() {
   });
   city.addEventListener("change", function () {
     if (regexCity.test(city.value)) {
+      cityErrorMsg.innerText = "";
       return true;
     } else {
       cityErrorMsg.innerText = "Veuillez saisir un nom de ville correct";
@@ -205,6 +225,7 @@ function validationDuPanier() {
   });
   email.addEventListener("change", function () {
     if (regexEmail.test(email.value)) {
+      emailErrorMsg.innerText = "";
       return true;
     } else {
       emailErrorMsg.innerText = "Veuillez saisir une adresse mail valide";
