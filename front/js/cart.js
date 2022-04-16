@@ -135,7 +135,7 @@ function supprimerProduit(produitSelectionne) {
 
 // Modification d un produit Mettre le refreshprice() dedans
 
-function modifQuantite(produitSelectionne) {
+function modifQuantite() {
   let panierLocal = JSON.parse(localStorage.cart);
   let inputQuantite = document.querySelectorAll(".itemQuantity");
   inputQuantite.forEach((element) => {
@@ -233,17 +233,33 @@ function validationDuPanier() {
       return false;
     }
   });
-}
-//Validation et passage a la page 'confirmation'
-function checkValid() {
-  if (
-    emailErrorMsg.hidden == true &&
-    cityErrorMsg.hidden == true &&
-    addressErrorMsg.hidden == true &&
-    lastNameErrorMsg.hidden == true &&
-    firstNameErrorMsg.hidden == true
-  ) {
-    let boutonCommander = document.getElementById("order");
-    boutonCommander.setAttribute("href", "/front/html/confirmation.html");
+  //Validation et passage a la page 'confirmation'
+  function checkValid() {
+    if (
+      emailErrorMsg.hidden == true &&
+      cityErrorMsg.hidden == true &&
+      addressErrorMsg.hidden == true &&
+      lastNameErrorMsg.hidden == true &&
+      firstNameErrorMsg.hidden == true
+    ) {
+      let informationsFormulaire = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+      };
+      let objetRequetpost = { informationsFormulaire, produitsDansLePanier };
+      fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        body: JSON.stringify(objetRequetpost),
+      })
+        .then((reponse) => {
+          return reponse.json();
+        })
+        .then((confirmation) => {
+          window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
+        });
+    }
   }
 }

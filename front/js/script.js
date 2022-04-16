@@ -1,3 +1,4 @@
+"use strict";
 // Adresse de l'API
 const httpAPI = "http://localhost:3000/api/products/";
 
@@ -36,10 +37,7 @@ async function articlesAPI() {
 
     console.log("Le produit a l'index " + i + " est affiché");
     // Analyse une chaîne de caractères et retourne un HTMLDocument.
-    const affichageArticles = analyser.parseFromString(
-      gabaritHTML,
-      "text/html"
-    );
+    const affichageArticles = analyser.parseFromString(gabaritHTML, "text/html");
     blocHTMLArticle.appendChild(affichageArticles.body.firstChild);
   }
 }
