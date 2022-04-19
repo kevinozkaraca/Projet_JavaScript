@@ -26,7 +26,7 @@ async function articlesAPI() {
   console.log("articles de l'API --->", products);
   let blocHTMLArticle = document.getElementById("items");
   // Boucle de l'ensemble des produits et affichage dans le DOM
-  for (i = 0; i < products.length; i++) {
+  for (let i = 0; i < products.length; i++) {
     let gabaritHTML = `<a href="./product.html?id=${products[i]._id}">
         <article id="element${i}">
           <img src="${products[i].imageUrl}" alt="${products[i].altTxt}">

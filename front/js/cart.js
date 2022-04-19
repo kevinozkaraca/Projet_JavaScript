@@ -1,5 +1,7 @@
 "use strict";
 
+//--------------------------------------Initialisation----------------------------------------
+
 //Recuperation du localStorage
 let produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
 if (!localStorage.cart || localStorage.cart.length == 0 || localStorage.cart == undefined) {
@@ -15,8 +17,22 @@ function init() {
   displayProduct(produitsDansLePanier);
   refreshPrices();
   modifQuantite();
-  validationDuPanier();
+  validationPrenom();
+  validationNom();
+  validationAdress();
+  validationVille();
+  validationEmail();
 }
+
+// Validation formulaire
+let validationPrenomCheck = false;
+let validationNomCheck = false;
+let validationAdressCheck = false;
+let validationVilleCheck = false;
+let validationEmailCheck = false;
+
+//--------------------------------------Affichage du panier-----------------------------------
+
 // Affichage du panier et message au cas ou le panier est vide
 function displayProduct(produitsDansLePanier) {
   for (let cart in produitsDansLePanier) {
@@ -99,6 +115,8 @@ boutonSupp.forEach((element) => {
   });
 });
 
+//--------------------------------------Mise a jour / Suppression / Modification--------------
+
 // Mise a jour des prix
 function refreshPrices() {
   let panierLocal = [];
@@ -109,7 +127,7 @@ function refreshPrices() {
   let total = 0;
   panierLocal.forEach((element) => {
     qte += element.quantity;
-    total += qte * element.prix;
+    total += element.quantity * element.prix;
   });
   document.getElementById("totalQuantity").innerHTML = qte;
   document.getElementById("totalPrice").innerHTML = total;
@@ -134,27 +152,30 @@ function supprimerProduit(produitSelectionne) {
 }
 
 // Modification d un produit Mettre le refreshprice() dedans
-
 function modifQuantite() {
   let panierLocal = JSON.parse(localStorage.cart);
   let inputQuantite = document.querySelectorAll(".itemQuantity");
   inputQuantite.forEach((element) => {
     element.addEventListener("change", (e) => {
       e.preventDefault();
-      let changeQte = parseInt(e.path[0].value);
-      panierLocal.forEach((element) => {
-        if (element.id == e.path[0].id) {
-          element.quantity = changeQte;
+      let articleEnCoursId = element.getAttribute("id");
+      console.log(element.value);
+      let changeQte = parseInt(element.value);
+      panierLocal.forEach((el) => {
+        if (el.id == articleEnCoursId) {
+          el.quantity = changeQte;
           localStorage.setItem("cart", JSON.stringify(panierLocal));
-          location.reload();
+          refreshPrices();
         }
       });
     });
   });
 }
 
-// Variables pour les saisies et les messages d'erreur pour le formulaire
-function validationDuPanier() {
+//--------------------------------------Formulaire--------------------------------------------
+
+// Les saisies formulaire et les messages d'erreur pour le formulaire
+function validationPrenom() {
   // Prenom
   let firstName = document.getElementById("firstName");
   let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
@@ -162,8 +183,8 @@ function validationDuPanier() {
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
   firstName.addEventListener("change", function () {
     if (regexFirstName.test(firstName.value)) {
-      firstNameErrorMsg.innerText = "  ";
-      firstNameErrorMsg.setAttribute("hidden", true);
+      firstNameErrorMsg.innerText = "";
+      validationPrenomCheck = true;
       checkValid();
       return true;
     } else {
@@ -171,6 +192,8 @@ function validationDuPanier() {
       return false;
     }
   });
+}
+function validationNom() {
   // Nom
   let lastName = document.getElementById("lastName");
   let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
@@ -178,8 +201,8 @@ function validationDuPanier() {
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
   lastName.addEventListener("change", function () {
     if (regexLastName.test(lastName.value)) {
-      lastNameErrorMsg.innerText = "   ";
-      lastNameErrorMsg.setAttribute("hidden", true);
+      lastNameErrorMsg.innerText = "";
+      validationNomCheck = true;
       checkValid();
       return true;
     } else {
@@ -187,6 +210,9 @@ function validationDuPanier() {
       return false;
     }
   });
+}
+
+function validationAdress() {
   // Adresse
   let address = document.getElementById("address");
   let addressErrorMsg = document.getElementById("addressErrorMsg");
@@ -194,8 +220,8 @@ function validationDuPanier() {
     /(\d+)?\,?\s?(bis|ter|quater)?\,?\s?(rue|avenue|boulevard|r|av|ave|bd|bvd|square|sente|impasse|cours|esplanade|allée|résidence|parc|rond-point|chemin|côte|place|cité|quai|passage|lôtissement|hameau)?\s([a-zA-Zà-ÿ0-9\s]{2,})+$/gi;
   address.addEventListener("change", function () {
     if (regexAddress.test(address.value)) {
-      addressErrorMsg.innerText = "  ";
-      addressErrorMsg.setAttribute("hidden", true);
+      addressErrorMsg.innerText = "";
+      validationAdressCheck = true;
       checkValid();
       return true;
     } else {
@@ -203,14 +229,17 @@ function validationDuPanier() {
       return false;
     }
   });
+}
+
+function validationVille() {
   // Ville
   let city = document.getElementById("city");
   let cityErrorMsg = document.getElementById("cityErrorMsg");
   let regexCity = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
   city.addEventListener("change", function () {
     if (regexCity.test(city.value)) {
-      cityErrorMsg.innerText = "  ";
-      cityErrorMsg.setAttribute("hidden", true);
+      cityErrorMsg.innerText = "";
+      validationVilleCheck = true;
       checkValid();
       return true;
     } else {
@@ -218,6 +247,9 @@ function validationDuPanier() {
       return false;
     }
   });
+}
+
+function validationEmail() {
   // Email
   let email = document.getElementById("email");
   let emailErrorMsg = document.getElementById("emailErrorMsg");
@@ -225,7 +257,7 @@ function validationDuPanier() {
   email.addEventListener("change", function () {
     if (regexEmail.test(email.value)) {
       emailErrorMsg.innerText = "";
-      emailErrorMsg.setAttribute("hidden", true);
+      validationEmailCheck = true;
       checkValid();
       return true;
     } else {
@@ -233,33 +265,47 @@ function validationDuPanier() {
       return false;
     }
   });
-  //Validation et passage a la page 'confirmation'
-  function checkValid() {
-    if (
-      emailErrorMsg.hidden == true &&
-      cityErrorMsg.hidden == true &&
-      addressErrorMsg.hidden == true &&
-      lastNameErrorMsg.hidden == true &&
-      firstNameErrorMsg.hidden == true
-    ) {
-      let informationsFormulaire = {
+}
+
+//--------------------------------------Validation et Passage a la confirmation---------------
+
+//Validation et passage a la page 'confirmation'
+document.getElementById("order").disabled = true;
+
+function checkValid() {
+  if (
+    validationPrenomCheck == true &&
+    validationNomCheck == true &&
+    validationAdressCheck == true &&
+    validationVilleCheck == true &&
+    validationEmailCheck == true
+  ) {
+    document.getElementById("order").disabled = false;
+    let lePanier = JSON.parse(localStorage.getItem("cart"));
+    let order = {
+      contact: {
         firstName: firstName.value,
         lastName: lastName.value,
         address: address.value,
         city: city.value,
         email: email.value,
-      };
-      let objetRequetpost = { informationsFormulaire, produitsDansLePanier };
-      fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        body: JSON.stringify(objetRequetpost),
+      },
+      products: lePanier,
+    };
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((reponse) => {
+        console.log(reponse.json());
+        return reponse.json();
       })
-        .then((reponse) => {
-          return reponse.json();
-        })
-        .then((confirmation) => {
-          window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
-        });
-    }
+      .then((confirmation) => {
+        console.log(confirmation);
+        window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
+      });
   }
 }
