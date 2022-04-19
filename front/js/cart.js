@@ -183,9 +183,9 @@ function validationPrenom() {
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
   firstName.addEventListener("change", function () {
     if (regexFirstName.test(firstName.value)) {
-      firstNameErrorMsg.innerText = "";
+      firstNameErrorMsg.innerText = "  ";
       validationPrenomCheck = true;
-      checkValid();
+
       return true;
     } else {
       firstNameErrorMsg.innerText = "Veuillez saisir un prénom correct";
@@ -201,9 +201,9 @@ function validationNom() {
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
   lastName.addEventListener("change", function () {
     if (regexLastName.test(lastName.value)) {
-      lastNameErrorMsg.innerText = "";
+      lastNameErrorMsg.innerText = "  ";
       validationNomCheck = true;
-      checkValid();
+
       return true;
     } else {
       lastNameErrorMsg.innerText = "Veuillez saisir un nom correct";
@@ -220,9 +220,9 @@ function validationAdress() {
     /(\d+)?\,?\s?(bis|ter|quater)?\,?\s?(rue|avenue|boulevard|r|av|ave|bd|bvd|square|sente|impasse|cours|esplanade|allée|résidence|parc|rond-point|chemin|côte|place|cité|quai|passage|lôtissement|hameau)?\s([a-zA-Zà-ÿ0-9\s]{2,})+$/gi;
   address.addEventListener("change", function () {
     if (regexAddress.test(address.value)) {
-      addressErrorMsg.innerText = "";
+      addressErrorMsg.innerText = "  ";
       validationAdressCheck = true;
-      checkValid();
+
       return true;
     } else {
       addressErrorMsg.innerText = "Veuillez saisir une adresse correcte";
@@ -238,9 +238,9 @@ function validationVille() {
   let regexCity = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
   city.addEventListener("change", function () {
     if (regexCity.test(city.value)) {
-      cityErrorMsg.innerText = "";
+      cityErrorMsg.innerText = "  ";
       validationVilleCheck = true;
-      checkValid();
+
       return true;
     } else {
       cityErrorMsg.innerText = "Veuillez saisir un nom de ville correct";
@@ -258,7 +258,6 @@ function validationEmail() {
     if (regexEmail.test(email.value)) {
       emailErrorMsg.innerText = "";
       validationEmailCheck = true;
-      checkValid();
       return true;
     } else {
       emailErrorMsg.innerText = "Veuillez saisir une adresse mail valide";
@@ -270,43 +269,39 @@ function validationEmail() {
 //--------------------------------------Validation et Passage a la confirmation---------------
 
 //Validation et passage a la page 'confirmation'
-document.getElementById("order").disabled = true;
+let bouttonCommander = document.getElementById("order");
 
-function checkValid() {
-  if (
-    validationPrenomCheck == true &&
-    validationNomCheck == true &&
-    validationAdressCheck == true &&
-    validationVilleCheck == true &&
-    validationEmailCheck == true
-  ) {
-    document.getElementById("order").disabled = false;
+bouttonCommander.addEventListener("click", function () {
+  if (validationEmailCheck == true) {
+    document.getElementById("order").disabled = true;
     produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
-    let order = {
-      contact: {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value,
-      },
-      products: produitsDansLePanier,
+    let products = [];
+    produitsDansLePanier.forEach((order) => {
+      products.push(order.id);
+    });
+    let contact = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
     };
+    let order = { contact, products };
+    console.log("nous sommes la");
     console.log(order);
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: order,
+      body: JSON.stringify(order),
     })
-      .then((reponse) => {
-        return reponse.json();
+      .then((response) => {
+        return response.json();
       })
       .then((confirmation) => {
         console.log(confirmation);
-        //window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
+        window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
       });
   }
-}
-checkValid();
+});
