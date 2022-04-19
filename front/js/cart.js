@@ -272,12 +272,18 @@ function validationEmail() {
 let bouttonCommander = document.getElementById("order");
 
 bouttonCommander.addEventListener("click", function () {
-  if (validationEmailCheck == true) {
+  if (
+    validationPrenomCheck == true &&
+    validationNomCheck == true &&
+    validationAdressCheck == true &&
+    validationVilleCheck == true &&
+    validationEmailCheck == true
+  ) {
     document.getElementById("order").disabled = true;
     produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
     let products = [];
-    produitsDansLePanier.forEach((order) => {
-      products.push(order.id);
+    produitsDansLePanier.forEach((produit) => {
+      products.push(produit.id);
     });
     let contact = {
       firstName: firstName.value,
@@ -287,7 +293,6 @@ bouttonCommander.addEventListener("click", function () {
       email: email.value,
     };
     let order = { contact, products };
-    console.log("nous sommes la");
     console.log(order);
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
@@ -303,5 +308,7 @@ bouttonCommander.addEventListener("click", function () {
         console.log(confirmation);
         window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
       });
+  } else {
+    document.getElementById("order").disabled = true;
   }
 });
