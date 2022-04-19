@@ -281,7 +281,7 @@ function checkValid() {
     validationEmailCheck == true
   ) {
     document.getElementById("order").disabled = false;
-    let lePanier = JSON.parse(localStorage.getItem("cart"));
+    produitsDansLePanier = JSON.parse(localStorage.getItem("cart"));
     let order = {
       contact: {
         firstName: firstName.value,
@@ -290,22 +290,23 @@ function checkValid() {
         city: city.value,
         email: email.value,
       },
-      products: lePanier,
+      products: produitsDansLePanier,
     };
+    console.log(order);
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
-      body: JSON.stringify(order),
       headers: {
         "Content-Type": "application/json",
       },
+      body: order,
     })
       .then((reponse) => {
-        console.log(reponse.json());
         return reponse.json();
       })
       .then((confirmation) => {
         console.log(confirmation);
-        window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
+        //window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
       });
   }
 }
+checkValid();
