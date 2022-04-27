@@ -65,7 +65,23 @@ j'y ai passé la journée mais j'ai réussi à afficher les articles sur le site
 </p>
 <br/>
 
-### Mes reseaux sociaux : 
+En selectionnant un produit on peut afficher les details de celui-ci et selectionner un quantite et une couleur
+
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet09.png"/>
+</p>
+<br/>
+
+Une fois les produits selectionnes ils sont affiches sur une page qui affiche les produits dans le panier. Il est possible de modifier la quantite et de les supprimer
+
+<br/>
+<p align="center">
+  <img align="center" width="80%" alt="Base du projet de formation" src="imagesReadme/projet10.png"/>
+</p>
+<br/>
+
+### Mes reseaux sociaux :
 
 <p align="center">
     <div class="socialIcons">
