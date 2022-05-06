@@ -119,6 +119,9 @@ boutonPanier.addEventListener("click", function () {
   } else if (quantiteSelectionnee == 0) {
     console.log("0 en quantite");
     alert("Vous n'avez pas selectionnez de quantite");
+  } else if (quantiteSelectionnee < 0) {
+    console.log("0 en quantite");
+    alert("Vous n'avez pas selectionnez de quantite");
   } else if (quantiteSelectionnee > 100) {
     console.log("Au dessus de la quantite possible");
     alert("La quantite est superieur a 100");
